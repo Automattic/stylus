@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.6",
-    "mocha": "^10.4.0"
+    "mocha": "^11.0.1"
   },
   "bugs": {
     "url": "https://github.com/stylus/stylus/issues"
