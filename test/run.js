@@ -3,6 +3,8 @@
  * Module dependencies.
  */
 
+const { ParseError } = require('../lib/errors');
+
 var stylus = require('../')
   , fs = require('fs')
   , isWindows = process.platform === 'win32'
@@ -226,6 +228,27 @@ bar
       compress: true
     });
     style.render().should.equal('foo{font-size:20px}bar{font-size:20px}');
+  });
+
+  it('line & column of error messages should be correct after multiple line breaks.', function() {
+    var style = stylus(`
+.foo
+    font-size 20px
+
+${'\n'.repeat(200)}
+// comment
+.bar
+  /
+
+// error here
+.foo
+    color red
+`);
+    style.render((err) => {
+      should.exist(err);
+      should.equal(err instanceof ParseError, true);
+      should.equal(err.message.startsWith("stylus:210:1"), true)
+    });
   });
 });
 
