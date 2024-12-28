@@ -3,6 +3,8 @@
  * Module dependencies.
  */
 
+const { ParseError } = require('../lib/errors');
+
 var stylus = require('../')
   , fs = require('fs')
   , isWindows = process.platform === 'win32'
@@ -20,8 +22,8 @@ addSuite('integration', readDir('test/cases'), function(test) {
       .include(__dirname + '/cases/import.basic');
 
   // TODO skip url test ci on windows platform
-  // cause '\r\n' and `\n` generate different hash string   
-  // relative commit https://github.com/stylus/stylus/commit/fe0c090a5c0c0db73f4afd3a803af33996548d01 
+  // cause '\r\n' and `\n` generate different hash string
+  // relative commit https://github.com/stylus/stylus/commit/fe0c090a5c0c0db73f4afd3a803af33996548d01
   if (isWindows && (test || '').includes('functions.url')) {
     return;
   }
@@ -207,6 +209,46 @@ describe('JS API', function() {
     });
     style.render().should.equal('body{color:#f00}/*# sourceMappingURL=build.css.map */');
     style.sourcemap.sources[0].should.equal('../test.styl');
+  });
+});
+
+describe('Maximum call stack size', function() {
+  it('newline', function() {
+    // too many line breaks can cause stack overflow during parsing
+    // then number of line breaks is affected by the device being run.
+    var code = `
+foo
+    font-size 20px
+${'\n'.repeat(10000)}
+bar
+    font-size 20px
+`;
+
+    var style = stylus(code, {
+      compress: true
+    });
+    style.render().should.equal('foo{font-size:20px}bar{font-size:20px}');
+  });
+
+  it('line & column of error messages should be correct after multiple line breaks.', function() {
+    var style = stylus(`
+.foo
+    font-size 20px
+
+${'\n'.repeat(200)}
+// comment
+.bar
+  /
+
+// error here
+.foo
+    color red
+`);
+    style.render((err) => {
+      should.exist(err);
+      should.equal(err instanceof ParseError, true);
+      should.equal(err.message.startsWith("stylus:210:1"), true)
+    });
   });
 });
 
