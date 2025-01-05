@@ -1,0 +1,11 @@
+{
+  "version": 3,
+  "sources": [
+    "basic.embedSource.styl"
+  ],
+  "sourcesContent": ["$color = red\n\nbody\na\nsection\n  width: 500px\n  margin: 0 auto\n  text-decoration underline\n\n  h2\n    color: green\n\nh1\n  color: $color\n\n/* comment */\n\n@css {\n  h3 {\n    color: yellow;\n  }\n}\n\n@media screen and (max-width: 500px)\n  body\n    color: pink\n"],
+  "names": [],
+  "mappings": "AAEA;AACA;AACA;EACE,OAAO,MAAP;EACA,QAAQ,OAAR;EACA,iBAAgB,UAAhB;;AAEA;;;EACE,OAAO,QAAP;;AAEJ;EACE,OAAO,KAAP;;AAEF;AAEA,AAAE;AACA;AACE;AACF;AAGiC;AACjC;IACE,OAAO,QAAP",
+  "file": "basic.embedSource.css",
+  "sourceRoot": "/"
+}

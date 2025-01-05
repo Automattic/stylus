@@ -38,7 +38,8 @@ style.render(function(err, css) {
 
 ```bash
 `comment`     Adds a comment with the `sourceMappingURL` to the generated CSS (default: `true`)
-`inline`      Inlines the sourcemap with full source text in base64 format (default: `false`)
+`inline`      Inlines the sourcemap into the generated CSS in base64 format (default: `false`)
 `sourceRoot`  "sourceRoot" property of the generated sourcemap
 `basePath`    Base path from which sourcemap and all sources are relative (default: `.`)
+`embedSource` Embed the full source text into the sourcemap (defaut: `false`)
 ```

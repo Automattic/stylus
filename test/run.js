@@ -20,8 +20,8 @@ addSuite('integration', readDir('test/cases'), function(test) {
       .include(__dirname + '/cases/import.basic');
 
   // TODO skip url test ci on windows platform
-  // cause '\r\n' and `\n` generate different hash string   
-  // relative commit https://github.com/stylus/stylus/commit/fe0c090a5c0c0db73f4afd3a803af33996548d01 
+  // cause '\r\n' and `\n` generate different hash string
+  // relative commit https://github.com/stylus/stylus/commit/fe0c090a5c0c0db73f4afd3a803af33996548d01
   if (isWindows && (test || '').includes('functions.url')) {
     return;
   }
@@ -61,20 +61,29 @@ addSuite('dependency resolver', readDir('test/deps-resolver'), function(test) {
 
 addSuite('sourcemap', readDir('test/sourcemap'), function(test) {
   var inline = ~test.indexOf('inline')
+    , embedSource = ~test.indexOf('embedSource')
     , path = 'test/sourcemap/' + test + '.styl'
     , styl = readFile(path)
     , style = stylus(styl).set('filename', path).set('sourcemap',
-      { inline: inline, sourceRoot: '/', basePath: 'test/sourcemap' })
-    , expected = readFile(path.replace('.styl', inline ? '.css' : '.map'))
+      { inline: inline, sourceRoot: '/', basePath: 'test/sourcemap', embedSource: embedSource })
     , comment = 'sourceMappingURL=data:application/json;';
 
   style.render(function(err, css) {
     if(err) throw err;
     if(inline) {
-      style.sourcemap.sourcesContent.should.not.be.empty;
+      if(embedSource)
+        style.sourcemap.sourcesContent.should.not.be.empty;
+      else
+        should.not.exist(style.sourcemap.sourcesContent);
       if(~test.indexOf('utf-8')) comment += 'charset=utf-8;';
       css.should.contain(comment + 'base64,');
     } else {
+      var expected = readFile(path.replace('.styl', '.map'));
+      // The embedded sources in the expected file are unix style line ending, \n only
+      // We replace the eventual \r\n in the result to get the same line ending
+      // so that the test pass on Windows as well
+      if(style.sourcemap.sourcesContent)
+        style.sourcemap.sourcesContent = style.sourcemap.sourcesContent.map(function(s) { return s.replaceAll("\r\n", "\n"); });
       style.sourcemap.should.eql(JSON.parse(expected));
     }
   });
