@@ -1,1 +1,10 @@
-{"version":3,"sources":["basic.styl"],"names":[],"mappings":"AAEA;AACA;AACA;EACE,OAAO,MAAP;EACA,QAAQ,OAAR;;AAEA;;;EACE,OAAO,QAAP;;AAEJ;EACE,OAAO,KAAP;;AAEF;AAEA,AAAE;AACA;AACE;AACF;AAGiC;AACjC;IACE,OAAO,QAAP","file":"basic.css","sourceRoot":"/"}
+{
+  "version": 3,
+  "sources": [
+    "basic.styl"
+  ],
+  "names": [],
+  "mappings": "AAEA;AACA;AACA;EACE,OAAO,MAAP;EACA,QAAQ,OAAR;;AAEA;;;EACE,OAAO,QAAP;;AAEJ;EACE,OAAO,KAAP;;AAEF;AAEA,AAAE;AACA;AACE;AACF;AAGiC;AACjC;IACE,OAAO,QAAP",
+  "file": "basic.css",
+  "sourceRoot": "/"
+}
