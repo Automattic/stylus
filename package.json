@@ -28,7 +28,7 @@
     "test": "mocha test/ test/middleware/ --require chai --bail --check-leaks --reporter dot"
   },
   "dependencies": {
-    "@adobe/css-tools": "~4.3.3",
+    "@adobe/css-tools": "~4.4.1",
     "debug": "^4.3.2",
     "glob": "^10.4.5",
     "sax": "~1.4.1",
